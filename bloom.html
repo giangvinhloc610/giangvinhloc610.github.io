@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Minimal web interface for using Bloom AI from BigScience on HuggingFace</title>
+</head>
+<body>
+	<h1 style="font-family: Arial;">Minimal web interface for Bloom AI from BigScience via HuggingFace API</h1>
+	<p style="font-family: Arial;">I made this so it can run on my Nokia's Opera Mini browser :)</p>
+	<form enctype='application/json' method="post" action="https://api-inference.huggingface.co/models/bigscience/bloom">
+		<!-- Our input field -->
+		<input type="text" name="inputs">
+
+		<!-- Our submit button -->
+		<input type="submit" value="Send to Bloom!">
+	</form>
+</body>
+</html>
