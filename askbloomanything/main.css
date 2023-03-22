@@ -1,0 +1,147 @@
+/* Got from https://codepen.io/lucasyem/pen/ZEEYKdj */
+
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 50%;
+}
+.form__field {
+  font-family: 'Arial';
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #9b9b9b;
+  outline: 0;
+  font-size: 1.3rem;
+  color: #fff;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+.form__field::placeholder {
+  color: transparent;
+}
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 20px;
+}
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #9b9b9b;
+}
+.form__field:focus {
+  padding-bottom: 6px;
+  font-weight: 700;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #11998e, #38ef7d);
+  border-image-slice: 1;
+}
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #11998e;
+  font-weight: 700;
+}
+/* reset input */
+.form__field:required, .form__field:invalid {
+  box-shadow: none;
+}
+
+/* Got from https://codepen.io/alvarotrigo/pen/abVPyaJ */
+
+input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+  }
+  label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 36px;
+    height: 18px;
+    background: #89B9FB;
+    display: block;
+    border-radius: 18px;
+    position: relative;
+  }
+  label:after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 15px;
+    transition: 0.3s;
+  }
+  input:checked + label {
+    background: #89B9FB;
+  }
+  input:checked + label:after {
+    left: calc(100% - 1px);
+    transform: translateX(-100%);
+  }
+  label:active:after {
+    width: 20px;
+  }
+
+/* Got from https://getcssscan.com/css-buttons-examples, button #21*/
+.submit-button {
+  appearance: none;
+  background-color: #3EB2FD;
+  background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%);
+  background-size: calc(100% + 20px) calc(100% + 20px);
+  border-radius: 100px;
+  border-width: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
+  height: auto;
+  justify-content: center;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color .2s,background-position .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.submit-button:active,
+.submit-button:focus {
+  outline: none;
+}
+
+.submit-button:hover {
+  background-position: -20px -20px;
+}
+
+.submit-button:focus:not(:active) {
+  box-shadow: rgba(40, 170, 255, 0.25) 0 0 0 .125em;
+}
+
+/* Body */
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 1.5rem;
+    background-color: #222222;
+  }

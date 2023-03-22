@@ -1,0 +1,101 @@
+<!-- 
+    AskBloomAnything - A simple web frontend for ask and get an answer with Bloom
+    Copyright 2023 gvl610
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta references from Jing Hua's FreeChatGPT-->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="apple-touch-icon" sizes="180x180" href="https://s3.amazonaws.com/moonup/production/uploads/1634806038075-5df7e9e5da6d0311fd3d53f9.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="https://s3.amazonaws.com/moonup/production/uploads/1634806038075-5df7e9e5da6d0311fd3d53f9.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="https://s3.amazonaws.com/moonup/production/uploads/1634806038075-5df7e9e5da6d0311fd3d53f9.png" />
+        <meta property="og:image" content="https://s3.amazonaws.com/moonup/production/uploads/1634806038075-5df7e9e5da6d0311fd3d53f9.png" />
+        <meta name="twitter:image" content="https://s3.amazonaws.com/moonup/production/uploads/1634806038075-5df7e9e5da6d0311fd3d53f9.png" />
+        <meta
+        name="description"
+        content="Ask anything and get an answer from Bloom - the open source 175B parameters language model developed by BigScience!"
+        />
+        <meta
+        name="twitter:description"
+        content="Ask anything and get an answer from Bloom - the open source 175B parameters language model developed by BigScience!"
+        />
+        <meta name="twitter:title" content="AskBloomAnything" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <title>AskBloomAnything</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        <script type="text/javascript">
+            function compute() {
+                // Get input values
+                var input = document.getElementById("q").value;
+                var option = !document.getElementById("switch").checked;
+
+                // Buffer to store the whole Bloom response
+                // Instruction to the model is also added to the initial prompt
+                var buf = "Below is an instruction that describes a task. Write a response that appropriately completes the request. Response in the same language the request is written in. When finished responding, write '###'. ### Instruction: " + input + " ### Response:";
+
+                // Fetch function
+                var fetchloop = function() {
+                    // Send POST request to Bloom's API endpoint
+                    fetch("https://api-inference.huggingface.co/models/bigscience/bloom", {
+                        "headers": {"content-type": "application/json"},
+                        "body": "{\"inputs\":\"" + buf + "\",\"parameters\":{\"early_stopping\":false,\"length_penalty\":0,\"do_sample\":" + option.toString() + "}}",
+                        "method": "POST"})
+                    .then(function(response) {return response.json();}) // Parse JSON
+                    .then(function(json){
+                        // Get the generated text (pervious loop)
+                        var res = json[0].generated_text;
+
+                        // Set the buffer equal to new response
+                        buf = res;
+
+                        // Check if the result is fully computed
+                        if (res.split("### Response: ")[1].includes("###")) {
+                            // If yes -> print result
+                            var output = document.getElementById("output");
+                            output.innerText = buf.split("### Response: ")[1].split("###")[0];
+                        }
+
+                        else {
+                            // If not fully computed -> request the model to continue computing
+                            fetchloop();
+                        }
+                    });
+                }
+
+                // Begin fetching result from model
+                fetchloop();
+            }
+        </script>
+        <img src="https://s3.amazonaws.com/moonup/production/uploads/1634806038075-5df7e9e5da6d0311fd3d53f9.png" alt="Bloom logo">
+        <h3 style="color: white; text-align: center;">AskBloomAnything</h3>
+        <h4 style="color: white; text-align: center;">Ask anything and get an answer from Bloom - the open source 175B parameters language model developed by BigScience!</h4>
+        
+        <!-- Question input box -->
+        <!-- Got from https://codepen.io/lucasyem/pen/ZEEYKdj -->
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="Enter your question here" name="q" id="q" required />
+            <br>
+        </div>
+        
+        <!-- Buttons -->
+        <div style="display: flex; margin: 10px">
+            <!-- Button to switch between sampling and greedy mode -->
+            <p style="color: white; margin-right: 10px;">sampling</p>
+            <div style="display: inline-block; margin-right: 10px;"><input type="checkbox" id="switch" /><label for="switch">Toggle</label></div>
+            <div style="display: inline-block; margin-right: 10px;"><p style="color: white;">greedy</p></div>
+        </div>
+
+        <!-- Submit button -->
+        <button class="submit-button" role="button" onclick="compute();">Compute</button><br>
+
+        <!-- Area for text output -->
+        <p id="output" style="color: white;"></p>
+    </body>
+</html>
